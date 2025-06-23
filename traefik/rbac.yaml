@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik
+  namespace: kube-system
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: traefik-gateway-api
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+      - services
+      - endpoints
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - gateway.networking.k8s.io
+    resources:
+      - gatewayclasses
+      - gateways
+      - httproutes
+      - tcproutes
+      - grpcroutes
+      - referencegrants
+      - tlsroutes
+    verbs:
+      - get
+      - list
+      - watch
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: traefik-gateway-api-binding
+subjects:
+  - kind: ServiceAccount
+    name: traefik
+    namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: traefik-gateway-api
+  apiGroup: rbac.authorization.k8s.io
