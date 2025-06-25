@@ -1,0 +1,10 @@
+apiVersion: v2
+name: laravel-stack
+version: 0.1.0
+dependencies:
+  - name: traefik
+    version: 36.2.0
+    repository: https://traefik.github.io/charts
+  - name: whoami
+    version: 0.1.0
+    repository: "file://charts/whoami"

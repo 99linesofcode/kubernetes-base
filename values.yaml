@@ -1,0 +1,15 @@
+global:
+  gateway:
+    name: traefik-gateway
+    namespace: default
+
+traefik:
+  gateway:
+    name: traefik-gateway
+    namespace: default
+  hostNetwork: true
+  providers:
+    kubernetesGateway:
+      enabled: true
+    kubernetesIngress:
+      enabled: false
