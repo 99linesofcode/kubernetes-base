@@ -2,9 +2,17 @@ apiVersion: v2
 name: laravel-stack
 version: 0.1.0
 dependencies:
+  # Gateway controller — creates Gateway, GatewayClass, handles routing
   - name: traefik
     version: 36.2.0
     repository: https://traefik.github.io/charts
-  - name: whoami
+
+  # TLS certificate management — issues certs for Gateway HTTPS listener
+  - name: cert-manager
+    version: 1.17.2
+    repository: https://charts.jetstack.io
+
+  # FrankenPHP application (local subchart, vendored from kubernetes-php)
+  - name: frankenphp
     version: 0.1.0
-    repository: "file://charts/whoami"
+    repository: "file://charts/frankenphp"

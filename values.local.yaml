@@ -1,0 +1,7 @@
+global:
+  environment: local
+  domain: frankenphp.99linesofcode.test
+
+# FrankenPHP: mount local code via hostPath for live reloading
+frankenphp:
+  hostPath: /opt/data/development/laravel-skeleton

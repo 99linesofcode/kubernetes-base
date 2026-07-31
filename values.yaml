@@ -1,15 +1,53 @@
+# Shared across all subcharts — subcharts reference these via .Values.global
 global:
+  environment: local
   gateway:
     name: traefik-gateway
     namespace: default
+  domain: frankenphp.99linesofcode.test
 
+# --- Traefik (Gateway controller) ---
 traefik:
   gateway:
     name: traefik-gateway
     namespace: default
+    listeners:
+      web:
+        port: 80
+        protocol: HTTP
+      websecure:
+        port: 443
+        protocol: HTTPS
+        certificateRefs:
+          - name: frankenphp-tls
   hostNetwork: true
+  service:
+    enabled: false
   providers:
     kubernetesGateway:
       enabled: true
     kubernetesIngress:
       enabled: false
+  ports:
+    web:
+      port: 80
+    websecure:
+      port: 443
+
+# --- cert-manager ---
+cert-manager:
+  installCRDs: true
+  startupapicheck:
+    enabled: false
+
+# --- FrankenPHP app subchart ---
+frankenphp:
+  namespace: default
+  image:
+    repository: dunglas/frankenphp
+    tag: php8.5-alpine
+    pullPolicy: IfNotPresent
+  service:
+    port: 80
+  host: localhost
+  # hostPath: "" — set in values.local.yaml for local dev volume mount

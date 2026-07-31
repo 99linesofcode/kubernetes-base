@@ -1,0 +1,15 @@
+global:
+  environment: production
+  domain: frankenphp.99linesofcode.nl
+
+# Cloudflare DNS-01 configuration (token provided via --set or external secret)
+cloudflare:
+  apiToken: ""
+  email: 99linesofcode@gmail.com
+
+# FrankenPHP: production image with baked code, no hostPath
+frankenphp:
+  image:
+    repository: ghcr.io/99linesofcode/frankenphp
+    tag: v1.0.0
+    pullPolicy: IfNotPresent
