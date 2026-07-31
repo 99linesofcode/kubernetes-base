@@ -1,0 +1,62 @@
+global:
+  environment: production
+  domain: frankenphp.99linesofcode.nl
+  issuer:
+    name: cloudflare-dns01-issuer
+
+# Production: Cloudflare DNS-01 for TLS
+issuers:
+  selfSigned:
+    enabled: false
+  localCA:
+    enabled: false
+  cloudflare:
+    enabled: true
+
+# Cloudflare DNS-01 configuration
+# The api-token is stored in the SOPS-encrypted Secret at
+# secrets/production/cloudflare-api-token.yaml (decrypted by Flux).
+# The cloudflare-issuer template references that Secret directly.
+cloudflare:
+  email: 99linesofcode@gmail.com
+
+# Enable PostgreSQL in production with persistence
+# Passwords come from the SOPS-decrypted app-secrets Secret.
+postgresql:
+  enabled: true
+  auth:
+    existingSecret: app-secrets
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+# Enable Redis in production with persistence and auth
+# Password comes from the SOPS-decrypted app-secrets Secret.
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    existingSecret: app-secrets
+    existingSecretPasswordKey: redis-password
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
+  replica:
+    persistence:
+      enabled: true
+      size: 5Gi
+
+# FrankenPHP: production image with baked code, no hostPath
+frankenphp:
+  image:
+    repository: ghcr.io/99linesofcode/frankenphp
+    tag: v1.0.0
+    pullPolicy: IfNotPresent
+  database:
+    enabled: true
+  redis:
+    enabled: true
+  appSecretName: app-secrets
+

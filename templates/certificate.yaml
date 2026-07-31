@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: frankenphp-cert
+  namespace: {{ .Values.global.gateway.namespace }}
+spec:
+  commonName: {{ .Values.global.domain }}
+  dnsNames:
+    - {{ .Values.global.domain }}
+  secretName: frankenphp-tls
+  issuerRef:
+    name: {{ .Values.global.issuer.name }}
+    kind: ClusterIssuer

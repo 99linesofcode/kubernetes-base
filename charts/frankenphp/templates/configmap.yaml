@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}-{{ .Chart.Name }}-caddyfile"
+  namespace: {{ .Values.namespace }}
+data:
+  Caddyfile: |
+    {
+      servers {
+        trusted_proxies static private_ranges
+      }
+
+      frankenphp {
+        {$FRANKENPHP_CONFIG}
+      }
+
+      order php_server before file_server
+      order php before file_server
+    }
+
+    {$SERVER_NAME:localhost} {
+      root * /app/public
+      encode zstd gzip
+
+      request_header X-Sendfile-Type x-accel-redirect
+      request_header X-Accel-Mapping ../private-files=/private-files
+
+      intercept {
+        @accel header X-Accel-Redirect *
+        handle_response @accel {
+          root private-files/
+          rewrite * {resp.header.X-Accel-Redirect}
+          method * GET
+          header -X-Accel-Redirect
+          file_server
+        }
+      }
+
+      php_server
+    }

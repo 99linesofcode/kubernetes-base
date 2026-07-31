@@ -1,0 +1,6 @@
+.env
+# age private keys — never commit these
+age-key.txt
+age-*.txt
+*.agekey
+

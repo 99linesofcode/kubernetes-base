@@ -1,0 +1,47 @@
+global:
+  environment: local
+  domain: frankenphp.99linesofcode.test
+  issuer:
+    name: local-ca-issuer
+
+# Local: self-signed CA chain for TLS
+issuers:
+  selfSigned:
+    enabled: true
+  localCA:
+    enabled: true
+  cloudflare:
+    enabled: false
+
+# Enable PostgreSQL locally — no persistence, minimal resources
+# Passwords come from the SOPS-decrypted app-secrets Secret.
+postgresql:
+  enabled: true
+  auth:
+    existingSecret: app-secrets
+  primary:
+    persistence:
+      enabled: false
+
+# Enable Redis locally — no persistence, no auth (minimal for local dev)
+# No auth means no existingSecret needed; the chart skips secret creation.
+redis:
+  enabled: true
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+  replica:
+    persistence:
+      enabled: false
+
+# FrankenPHP: mount local code via hostPath for live reloading
+frankenphp:
+  hostPath: /opt/data/development/laravel-skeleton
+  database:
+    enabled: true
+  redis:
+    enabled: true
+  appSecretName: app-secrets
+

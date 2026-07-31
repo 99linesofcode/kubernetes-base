@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}-{{ .Chart.Name }}-deployment"
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Release.Name }}-{{ .Chart.Name }}-pod"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}-{{ .Chart.Name }}-pod"
+    spec:
+      {{- with .Values.hostPath }}
+      volumes:
+        - name: app-code
+          hostPath:
+            path: {{ . }}
+            type: Directory
+      {{- end }}
+      containers:
+        - name: "{{ .Release.Name }}-{{ .Chart.Name }}-pod"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: SERVER_NAME
+              value: {{ .Values.host | quote }}
+            - name: FRANKENPHP_CONFIG
+              value: "worker /app/public/index.php"
+            {{- if .Values.database.enabled }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appSecretName }}
+                  key: password
+                  optional: true
+            - name: DATABASE_URL
+              value: "postgresql://laravel:***@{{ .Release.Name }}-postgresql:5432/laravel"
+            {{- end }}
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.appSecretName }}
+                  key: redis-password
+                  optional: true
+            - name: REDIS_URL
+              value: "redis://***@{{ .Release.Name }}-redis-master:6379"
+            {{- end }}
+          {{- with .Values.hostPath }}
+          volumeMounts:
+            - name: app-code
+              mountPath: /app
+          {{- end }}
+

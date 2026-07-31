@@ -1,0 +1,4 @@
+apiVersion: v2
+name: frankenphp
+version: 0.1.0
+description: FrankenPHP application deployment with Gateway API HTTPRoute

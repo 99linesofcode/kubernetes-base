@@ -1,0 +1,107 @@
+# Shared across all subcharts — subcharts reference these via .Values.global
+global:
+  environment: local
+  gateway:
+    name: traefik-gateway
+    namespace: default
+  domain: frankenphp.99linesofcode.test
+  issuer:
+    name: local-ca-issuer
+
+# --- SOPS secrets management ---
+# SOPS-encrypted Secret files live under secrets/<environment>/.
+# Flux decrypts them in-cluster (see kubernetes-fleet Kustomization).
+# The chart references the pre-created secrets via existingSecret keys below.
+sops:
+  # Name of the SOPS-decrypted Secret that holds database and Redis passwords.
+  # The Bitnami postgresql and redis charts read from this Secret when
+  # auth.existingSecret is set.
+  appSecretName: app-secrets
+
+# --- Issuer toggles (enabled per environment via values overrides) ---
+issuers:
+  selfSigned:
+    enabled: true
+  localCA:
+    enabled: true
+  cloudflare:
+    enabled: false
+
+# --- Traefik (Gateway controller) ---
+traefik:
+  gateway:
+    name: traefik-gateway
+    namespace: default
+    listeners:
+      web:
+        port: 80
+        protocol: HTTP
+      websecure:
+        port: 443
+        protocol: HTTPS
+        certificateRefs:
+          - name: frankenphp-tls
+  hostNetwork: true
+  service:
+    enabled: false
+  providers:
+    kubernetesGateway:
+      enabled: true
+    kubernetesIngress:
+      enabled: false
+  ports:
+    web:
+      port: 80
+    websecure:
+      port: 443
+
+# --- cert-manager ---
+cert-manager:
+  installCRDs: true
+  startupapicheck:
+    enabled: false
+
+# --- PostgreSQL (Phase 2) ---
+# Disabled by default; enabled per-environment via values.local.yaml / values.production.yaml
+postgresql:
+  enabled: false
+  auth:
+    username: laravel
+    database: laravel
+    # Use the SOPS-decrypted Secret instead of letting the chart generate one.
+    existingSecret: app-secrets
+    # Key names inside the existingSecret:
+    #   password       → user password (read by Bitnami postgresql)
+    #   postgres-password → admin password (read by Bitnami postgresql)
+
+# --- Redis (Phase 3) ---
+# Disabled by default; enabled per-environment via values.local.yaml / values.production.yaml
+redis:
+  enabled: false
+  auth:
+    enabled: true
+    # Use the SOPS-decrypted Secret instead of letting the chart generate one.
+    existingSecret: app-secrets
+    # Key name inside the existingSecret: redis-password (read by Bitnami redis)
+    existingSecretPasswordKey: redis-password
+
+# --- FrankenPHP app subchart ---
+frankenphp:
+  namespace: default
+  image:
+    repository: dunglas/frankenphp
+    tag: php8.5-alpine
+    pullPolicy: IfNotPresent
+  service:
+    port: 80
+  host: localhost
+  # hostPath: "" — set in values.local.yaml for local dev volume mount
+  # database.enabled: set to true in environment overrides when postgresql is enabled
+  database:
+    enabled: false
+  # redis.enabled: set to true in environment overrides when redis is enabled
+  redis:
+    enabled: false
+  # Name of the SOPS-decrypted Secret holding passwords (used in env vars)
+  appSecretName: app-secrets
+

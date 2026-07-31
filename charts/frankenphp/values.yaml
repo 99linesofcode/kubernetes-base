@@ -1,0 +1,33 @@
+global:
+  gateway:
+    name: traefik-gateway
+    namespace: default
+  domain: localhost
+
+namespace: default
+
+image:
+  repository: dunglas/frankenphp
+  tag: php8.5-alpine
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+
+host: localhost
+# hostPath: "" — set in values.local.yaml for local dev volume mount
+
+# Database connection — inject DATABASE_URL env var from PostgreSQL secret
+# The Bitnami postgresql chart creates a secret named <release>-postgresql with a `uri` key
+database:
+  enabled: false
+
+# Redis connection — inject REDIS_URL env var from Redis secret
+# The Bitnami redis chart creates a secret named <release>-redis with a redis-password key
+redis:
+  enabled: false
+
+# Name of the SOPS-decrypted Secret holding database and Redis passwords.
+# Used by the deployment template for env var secretKeyRef lookups.
+appSecretName: app-secrets
+

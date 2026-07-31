@@ -1,0 +1,18 @@
+dependencies:
+- name: traefik
+  repository: https://traefik.github.io/charts
+  version: 36.2.0
+- name: cert-manager
+  repository: https://charts.jetstack.io
+  version: v1.17.2
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.7.2
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 27.0.18
+- name: frankenphp
+  repository: file://charts/frankenphp
+  version: 0.1.0
+digest: sha256:e7b37d17d290eefe980359fce7cba9caa86c7eced0955d6b07fb022713e1ee3c
+generated: "2026-07-31T18:23:38.614419189Z"
