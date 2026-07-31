@@ -13,6 +13,13 @@ spec:
       labels:
         app: "{{ .Release.Name }}-{{ .Chart.Name }}-pod"
     spec:
+      {{- with .Values.hostPath }}
+      volumes:
+        - name: app-code
+          hostPath:
+            path: {{ . }}
+            type: Directory
+      {{- end }}
       containers:
         - name: "{{ .Release.Name }}-{{ .Chart.Name }}-pod"
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -24,15 +31,8 @@ spec:
               value: {{ .Values.host | quote }}
             - name: FRANKENPHP_CONFIG
               value: "worker /app/public/index.php"
-          {{- if .Values.hostPath }}
+          {{- with .Values.hostPath }}
           volumeMounts:
             - name: app-code
               mountPath: /app
           {{- end }}
-      {{- if .Values.hostPath }}
-      volumes:
-        - name: app-code
-          hostPath:
-            path: {{ .Values.hostPath }}
-            type: Directory
-      {{- end }}

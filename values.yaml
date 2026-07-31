@@ -5,6 +5,17 @@ global:
     name: traefik-gateway
     namespace: default
   domain: frankenphp.99linesofcode.test
+  issuer:
+    name: local-ca-issuer
+
+# --- Issuer toggles (enabled per environment via values overrides) ---
+issuers:
+  selfSigned:
+    enabled: true
+  localCA:
+    enabled: true
+  cloudflare:
+    enabled: false
 
 # --- Traefik (Gateway controller) ---
 traefik:

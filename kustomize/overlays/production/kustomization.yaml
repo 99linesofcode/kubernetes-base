@@ -1,0 +1,5 @@
+# Production overlay — Cloudflare DNS-01 for TLS.
+# Usage: helm template laravel-stack . -f values.yaml -f values.production.yaml > prod.yaml && kustomize build
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources: []

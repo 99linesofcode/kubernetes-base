@@ -1,6 +1,17 @@
 global:
   environment: production
   domain: frankenphp.99linesofcode.nl
+  issuer:
+    name: cloudflare-dns01-issuer
+
+# Production: Cloudflare DNS-01 for TLS
+issuers:
+  selfSigned:
+    enabled: false
+  localCA:
+    enabled: false
+  cloudflare:
+    enabled: true
 
 # Cloudflare DNS-01 configuration (token provided via --set or external secret)
 cloudflare:

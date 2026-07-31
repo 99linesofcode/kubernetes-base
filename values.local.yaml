@@ -1,6 +1,17 @@
 global:
   environment: local
   domain: frankenphp.99linesofcode.test
+  issuer:
+    name: local-ca-issuer
+
+# Local: self-signed CA chain for TLS
+issuers:
+  selfSigned:
+    enabled: true
+  localCA:
+    enabled: true
+  cloudflare:
+    enabled: false
 
 # FrankenPHP: mount local code via hostPath for live reloading
 frankenphp:

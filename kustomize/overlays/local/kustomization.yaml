@@ -1,0 +1,5 @@
+# Local overlay — self-signed CA chain for local development.
+# Usage: helm template laravel-stack . -f values.yaml -f values.local.yaml > local.yaml && kustomize build
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources: []

@@ -9,9 +9,5 @@ spec:
     - {{ .Values.global.domain }}
   secretName: frankenphp-tls
   issuerRef:
-    {{- if eq .Values.global.environment "local" }}
-    name: local-ca-issuer
-    {{- else }}
-    name: cloudflare-dns01-issuer
-    {{- end }}
+    name: {{ .Values.global.issuer.name }}
     kind: ClusterIssuer
