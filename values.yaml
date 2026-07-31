@@ -51,6 +51,15 @@ cert-manager:
   startupapicheck:
     enabled: false
 
+# --- PostgreSQL (Phase 2) ---
+# Disabled by default; enabled per-environment via values.local.yaml / values.production.yaml
+postgresql:
+  enabled: false
+  auth:
+    username: laravel
+    database: laravel
+    # password: "" — set in environment overrides or via --set
+
 # --- FrankenPHP app subchart ---
 frankenphp:
   namespace: default
@@ -62,3 +71,6 @@ frankenphp:
     port: 80
   host: localhost
   # hostPath: "" — set in values.local.yaml for local dev volume mount
+  # database.enabled: set to true in environment overrides when postgresql is enabled
+  database:
+    enabled: false

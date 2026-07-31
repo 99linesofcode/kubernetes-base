@@ -18,9 +18,19 @@ cloudflare:
   apiToken: ""
   email: 99linesofcode@gmail.com
 
+# Enable PostgreSQL in production with persistence
+postgresql:
+  enabled: true
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
 # FrankenPHP: production image with baked code, no hostPath
 frankenphp:
   image:
     repository: ghcr.io/99linesofcode/frankenphp
     tag: v1.0.0
     pullPolicy: IfNotPresent
+  database:
+    enabled: true

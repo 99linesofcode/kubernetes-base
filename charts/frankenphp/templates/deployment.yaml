@@ -31,6 +31,15 @@ spec:
               value: {{ .Values.host | quote }}
             - name: FRANKENPHP_CONFIG
               value: "worker /app/public/index.php"
+            {{- if .Values.database.enabled }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-postgresql
+                  key: password
+            - name: DATABASE_URL
+              value: "postgresql://laravel:$(POSTGRES_PASSWORD)@{{ .Release.Name }}-postgresql:5432/laravel"
+            {{- end }}
           {{- with .Values.hostPath }}
           volumeMounts:
             - name: app-code

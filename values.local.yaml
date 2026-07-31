@@ -13,6 +13,15 @@ issuers:
   cloudflare:
     enabled: false
 
+# Enable PostgreSQL locally — no persistence, minimal resources
+postgresql:
+  enabled: true
+  primary:
+    persistence:
+      enabled: false
+
 # FrankenPHP: mount local code via hostPath for live reloading
 frankenphp:
   hostPath: /opt/data/development/laravel-skeleton
+  database:
+    enabled: true

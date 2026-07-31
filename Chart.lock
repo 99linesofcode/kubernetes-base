@@ -5,8 +5,11 @@ dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io
   version: v1.17.2
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.7.2
 - name: frankenphp
   repository: file://charts/frankenphp
   version: 0.1.0
-digest: sha256:b622e84a522e24b0ffa1a23c8c5fffc9ee00752f7a220e9ed6a184e34a843fdb
-generated: "2026-07-31T16:26:51.006837096Z"
+digest: sha256:6dcda900748d8ab6eb56e0a2e15f45f1f98191e1be0a056b1164a5bc24aa2dc9
+generated: "2026-07-31T17:44:03.814055015Z"

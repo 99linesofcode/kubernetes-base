@@ -16,3 +16,8 @@ service:
 
 host: localhost
 # hostPath: "" — set in values.local.yaml for local dev volume mount
+
+# Database connection — inject DATABASE_URL env var from PostgreSQL secret
+# The Bitnami postgresql chart creates a secret named <release>-postgresql with a `uri` key
+database:
+  enabled: false

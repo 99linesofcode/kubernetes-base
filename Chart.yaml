@@ -12,6 +12,12 @@ dependencies:
     version: 1.17.2
     repository: https://charts.jetstack.io
 
+  # PostgreSQL database (conditional — enabled via postgresql.enabled)
+  - name: postgresql
+    version: 16.7.2
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+
   # FrankenPHP application (local subchart, vendored from kubernetes-php)
   - name: frankenphp
     version: 0.1.0
