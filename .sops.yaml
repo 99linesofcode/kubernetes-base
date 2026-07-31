@@ -1,0 +1,22 @@
+# SOPS configuration for the FrankenPHP Kubernetes stack.
+#
+# Secrets are encrypted with age (https://age-encryption.org).
+# Each environment uses its own age recipient so production secrets
+# cannot be decrypted with the local key and vice-versa.
+#
+# Generate a key pair:
+#   age-keygen -o age-key.txt   # writes the private key + public key
+#   age-keygen -y age-key.txt   # prints the public key (recipient)
+#
+# The private key is stored as a Kubernetes Secret in the flux-system
+# namespace so Flux's kustomize-controller can decrypt in-cluster.
+
+creation_rules:
+  # Local development secrets
+  - path_regex: secrets/local/.*\.ya?ml$
+    age: age12pn8q6ewl6j5yyv3z9kqfa8y294kfmefxaxxzxfgt6xa6gwnpdhq5h2d7f
+
+  # Production secrets
+  - path_regex: secrets/production/.*\.ya?ml$
+    age: age1aa2zdus8xp2gw5chrjk2c95ngvxxy0q44ga0rfcuwxnash7h5y5qzszjcv
+

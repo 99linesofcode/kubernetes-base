@@ -1,13 +1,9 @@
 {{- if .Values.issuers.cloudflare.enabled }}
-apiVersion: v1
-kind: Secret
-metadata:
-  name: cloudflare-api-token
-  namespace: cert-manager
-type: Opaque
-stringData:
-  api-token: {{ .Values.cloudflare.apiToken | quote }}
----
+# The cloudflare-api-token Secret is created from the SOPS-encrypted file at
+# secrets/production/cloudflare-api-token.yaml. Flux decrypts it in-cluster
+# via the Kustomization's decryption block (provider: sops).
+# Do NOT create the Secret here — that would overwrite the decrypted value
+# with the empty placeholder in values.
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -25,3 +21,4 @@ spec:
               name: cloudflare-api-token
               key: api-token
 {{- end }}
+

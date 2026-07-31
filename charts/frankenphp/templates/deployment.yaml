@@ -35,16 +35,17 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-postgresql
+                  name: {{ .Values.appSecretName }}
                   key: password
+                  optional: true
             - name: DATABASE_URL
-              value: "postgresql://laravel:$(POSTGRES_PASSWORD)@{{ .Release.Name }}-postgresql:5432/laravel"
+              value: "postgresql://laravel:***@{{ .Release.Name }}-postgresql:5432/laravel"
             {{- end }}
             {{- if .Values.redis.enabled }}
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-redis
+                  name: {{ .Values.appSecretName }}
                   key: redis-password
                   optional: true
             - name: REDIS_URL
@@ -55,3 +56,4 @@ spec:
             - name: app-code
               mountPath: /app
           {{- end }}
+

@@ -8,6 +8,16 @@ global:
   issuer:
     name: local-ca-issuer
 
+# --- SOPS secrets management ---
+# SOPS-encrypted Secret files live under secrets/<environment>/.
+# Flux decrypts them in-cluster (see kubernetes-fleet Kustomization).
+# The chart references the pre-created secrets via existingSecret keys below.
+sops:
+  # Name of the SOPS-decrypted Secret that holds database and Redis passwords.
+  # The Bitnami postgresql and redis charts read from this Secret when
+  # auth.existingSecret is set.
+  appSecretName: app-secrets
+
 # --- Issuer toggles (enabled per environment via values overrides) ---
 issuers:
   selfSigned:
@@ -58,7 +68,11 @@ postgresql:
   auth:
     username: laravel
     database: laravel
-    # password: "" — set in environment overrides or via --set
+    # Use the SOPS-decrypted Secret instead of letting the chart generate one.
+    existingSecret: app-secrets
+    # Key names inside the existingSecret:
+    #   password       → user password (read by Bitnami postgresql)
+    #   postgres-password → admin password (read by Bitnami postgresql)
 
 # --- Redis (Phase 3) ---
 # Disabled by default; enabled per-environment via values.local.yaml / values.production.yaml
@@ -66,7 +80,10 @@ redis:
   enabled: false
   auth:
     enabled: true
-    # password: "" — set in environment overrides or via --set
+    # Use the SOPS-decrypted Secret instead of letting the chart generate one.
+    existingSecret: app-secrets
+    # Key name inside the existingSecret: redis-password (read by Bitnami redis)
+    existingSecretPasswordKey: redis-password
 
 # --- FrankenPHP app subchart ---
 frankenphp:
@@ -85,3 +102,6 @@ frankenphp:
   # redis.enabled: set to true in environment overrides when redis is enabled
   redis:
     enabled: false
+  # Name of the SOPS-decrypted Secret holding passwords (used in env vars)
+  appSecretName: app-secrets
+
