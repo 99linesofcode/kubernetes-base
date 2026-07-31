@@ -18,6 +18,12 @@ dependencies:
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
 
+  # Redis cache/queue (conditional — enabled via redis.enabled)
+  - name: redis
+    version: 27.0.18
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
+
   # FrankenPHP application (local subchart, vendored from kubernetes-php)
   - name: frankenphp
     version: 0.1.0

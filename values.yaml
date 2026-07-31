@@ -60,6 +60,14 @@ postgresql:
     database: laravel
     # password: "" — set in environment overrides or via --set
 
+# --- Redis (Phase 3) ---
+# Disabled by default; enabled per-environment via values.local.yaml / values.production.yaml
+redis:
+  enabled: false
+  auth:
+    enabled: true
+    # password: "" — set in environment overrides or via --set
+
 # --- FrankenPHP app subchart ---
 frankenphp:
   namespace: default
@@ -73,4 +81,7 @@ frankenphp:
   # hostPath: "" — set in values.local.yaml for local dev volume mount
   # database.enabled: set to true in environment overrides when postgresql is enabled
   database:
+    enabled: false
+  # redis.enabled: set to true in environment overrides when redis is enabled
+  redis:
     enabled: false

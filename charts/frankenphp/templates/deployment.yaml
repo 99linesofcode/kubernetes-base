@@ -40,6 +40,16 @@ spec:
             - name: DATABASE_URL
               value: "postgresql://laravel:$(POSTGRES_PASSWORD)@{{ .Release.Name }}-postgresql:5432/laravel"
             {{- end }}
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-redis
+                  key: redis-password
+                  optional: true
+            - name: REDIS_URL
+              value: "redis://***@{{ .Release.Name }}-redis-master:6379"
+            {{- end }}
           {{- with .Values.hostPath }}
           volumeMounts:
             - name: app-code

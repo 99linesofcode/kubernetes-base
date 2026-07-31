@@ -21,3 +21,8 @@ host: localhost
 # The Bitnami postgresql chart creates a secret named <release>-postgresql with a `uri` key
 database:
   enabled: false
+
+# Redis connection — inject REDIS_URL env var from Redis secret
+# The Bitnami redis chart creates a secret named <release>-redis with a redis-password key
+redis:
+  enabled: false

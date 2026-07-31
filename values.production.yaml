@@ -26,6 +26,22 @@ postgresql:
       enabled: true
       size: 10Gi
 
+
+# Enable Redis in production with persistence and auth
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    # password: "" — set via --set or external secret
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
+  replica:
+    persistence:
+      enabled: true
+      size: 5Gi
+
 # FrankenPHP: production image with baked code, no hostPath
 frankenphp:
   image:
@@ -33,4 +49,6 @@ frankenphp:
     tag: v1.0.0
     pullPolicy: IfNotPresent
   database:
+    enabled: true
+  redis:
     enabled: true

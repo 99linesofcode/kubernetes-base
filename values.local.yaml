@@ -20,8 +20,23 @@ postgresql:
     persistence:
       enabled: false
 
+
+# Enable Redis locally — no persistence, no auth (minimal for local dev)
+redis:
+  enabled: true
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+  replica:
+    persistence:
+      enabled: false
+
 # FrankenPHP: mount local code via hostPath for live reloading
 frankenphp:
   hostPath: /opt/data/development/laravel-skeleton
   database:
+    enabled: true
+  redis:
     enabled: true
