@@ -1,6 +1,9 @@
 dependencies:
 - name: traefik
   repository: https://traefik.github.io/charts
-  version: 36.2.0
-digest: sha256:90390336f074dd887423346a0397fd8adbceec6a8835d803abaa0b21f586da6b
-generated: "2025-06-24T16:18:26.388158324+02:00"
+  version: 41.4.0
+- name: whoami
+  repository: file://charts/whoami
+  version: 0.1.0
+digest: sha256:9b2bc8fc75d1860e5227ee8e74603f7b4067a9304ee3f08b6e6fdacbfbb360a1
+generated: "2026-09-06T15:24:55.722631809Z"
