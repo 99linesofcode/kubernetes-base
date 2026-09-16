@@ -12,6 +12,9 @@ updates:
       prefix: fix
       prefix-development: chore
       include: scope
+    ignore:
+      - update-types:
+          - version-update:semver-patch
 
   - package-ecosystem: helm
     directory: /
@@ -24,3 +27,6 @@ updates:
       prefix: fix
       prefix-development: chore
       include: scope
+    ignore:
+      - update-types:
+          - version-update:semver-patch
