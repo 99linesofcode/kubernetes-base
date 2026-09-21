@@ -1,4 +1,13 @@
-# 0.1.0 (2026-09-06)
+## [0.1.1](https://github.com/99linesofcode/kubernetes-base/compare/v0.1.0...v0.1.1) (2026-09-21)
+
+
+### Bug Fixes
+
+* **ci:** drop duplicate permissions block from automatic-updates wrapper ([04783b8](https://github.com/99linesofcode/kubernetes-base/commit/04783b8faf2d4d4f655dd6e469271ae3302942c7)), closes [#5](https://github.com/99linesofcode/kubernetes-base/issues/5)
+
+
+
+# [0.1.0](https://github.com/99linesofcode/kubernetes-base/compare/eb12617fb0147c834201ef70dc04088cfce263b7...v0.1.0) (2026-09-06)
 
 
 ### Bug Fixes
