@@ -1,4 +1,4 @@
-name: automatic updates
+name: Automatic updates
 
 on:
   pull_request_target:
@@ -10,7 +10,8 @@ permissions:
   issues: write
 
 jobs:
-  automatic-updates:
+  update:
     uses: 99linesofcode/.github/.github/workflows/automatic-updates.yaml@main
   agent:
     uses: 99linesofcode/.github/.github/workflows/update-agent.yaml@main
+    secrets: inherit
