@@ -1,0 +1,24 @@
+{{- if .Values.issuers.localCA.enabled }}
+# A local CA: a CA Certificate signed by the self-signed issuer, then a
+# ClusterIssuer that issues leaf certificates from it. For local development.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: local-ca
+  namespace: cert-manager
+spec:
+  isCA: true
+  commonName: local-ca
+  secretName: local-ca-secret
+  issuerRef:
+    name: self-signed-issuer
+    kind: ClusterIssuer
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: local-ca-issuer
+spec:
+  ca:
+    secretName: local-ca-secret
+{{- end }}

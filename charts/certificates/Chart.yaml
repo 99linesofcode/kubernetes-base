@@ -1,0 +1,4 @@
+apiVersion: v2
+name: certificates
+version: 0.1.0
+description: cert-manager ClusterIssuers (self-signed, local CA, Cloudflare DNS-01), each gated by a values toggle

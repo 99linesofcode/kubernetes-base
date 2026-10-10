@@ -1,0 +1,15 @@
+# Issuer toggles. Only the enabled issuers render, so one chart serves every
+# environment: local uses the self-signed CA chain, production uses Cloudflare.
+issuers:
+  selfSigned:
+    enabled: true
+  localCA:
+    enabled: true
+  cloudflare:
+    enabled: false
+
+# Required when issuers.cloudflare.enabled. The Cloudflare API token is expected
+# in a Secret named `cloudflare-api-token` (key `api-token`), created out of band
+# (SOPS-encrypted, decrypted by Flux in-cluster).
+cloudflare:
+  email: ""
